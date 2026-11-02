@@ -30,3 +30,7 @@ Thumbs.db
 .env
 .env.local
 *.log
+
+# Database storage
+data/
+*.db
