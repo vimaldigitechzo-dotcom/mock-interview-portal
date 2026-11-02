@@ -1,72 +1,10 @@
-//package com.interviewai.entity;
-//
-//import jakarta.persistence.*;
-//import java.time.LocalDateTime;
-//
-//@Entity
-//@Table(name = "interview_sessions")
-//public class InterviewSession {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @Column(name = "user_id", nullable = false)
-//    private Long userId;
-//
-//    @Column(name = "topic", nullable = false)
-//    private String topic;
-//
-//    @Column(name = "difficulty", nullable = false)
-//    private String difficulty;
-//
-//    @Column(name = "question_count")
-//    private int questionCount;
-//
-//    @Column(name = "overall_score")
-//    private Double overallScore;
-//
-//    @Column(name = "status")
-//    private String status; // "in_progress", "completed"
-//
-//    @Column(name = "created_at")
-//    private LocalDateTime createdAt;
-//
-//    @Column(name = "updated_at")
-//    private LocalDateTime updatedAt;
-//
-//    public InterviewSession() {}
-//
-//    // Getters and Setters
-//    public Long getId() { return id; }
-//    public void setId(Long id) { this.id = id; }
-//    public Long getUserId() { return userId; }
-//    public void setUserId(Long userId) { this.userId = userId; }
-//    public String getTopic() { return topic; }
-//    public void setTopic(String topic) { this.topic = topic; }
-//    public String getDifficulty() { return difficulty; }
-//    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
-//    public int getQuestionCount() { return questionCount; }
-//    public void setQuestionCount(int questionCount) { this.questionCount = questionCount; }
-//    public Double getOverallScore() { return overallScore; }
-//    public void setOverallScore(Double overallScore) { this.overallScore = overallScore; }
-//    public String getStatus() { return status; }
-//    public void setStatus(String status) { this.status = status; }
-//    public LocalDateTime getCreatedAt() { return createdAt; }
-//    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-//    public LocalDateTime getUpdatedAt() { return updatedAt; }
-//    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-//}
-
 package com.interviewai.entity;
 
 import jakarta.persistence.*;
-        import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "interview_sessions")
-@Data
 public class InterviewSession {
 
     @Id
@@ -101,9 +39,47 @@ public class InterviewSession {
     private LocalDateTime completedAt;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-}
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
+    public InterviewSession() {}
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public String getTopic() { return topic; }
+    public void setTopic(String topic) { this.topic = topic; }
+
+    public String getDifficulty() { return difficulty; }
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+
+    public int getTotalQuestions() { return totalQuestions; }
+    public void setTotalQuestions(int totalQuestions) { this.totalQuestions = totalQuestions; }
+
+    public int getAnsweredQuestions() { return answeredQuestions; }
+    public void setAnsweredQuestions(int answeredQuestions) { this.answeredQuestions = answeredQuestions; }
+
+    public Double getOverallScore() { return overallScore; }
+    public void setOverallScore(Double overallScore) { this.overallScore = overallScore; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public LocalDateTime getStartedAt() { return startedAt; }
+    public void setStartedAt(LocalDateTime startedAt) { this.startedAt = startedAt; }
+
+    public LocalDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+}
