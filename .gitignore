@@ -1,0 +1,32 @@
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.npm
+npm-debug.log*
+
+# Java / Maven Backend
+target/
+backend/target/
+*.class
+*.jar
+*.war
+
+# IDEs & System
+.vs/
+backend/.vs/
+.idea/
+backend/.idea/
+*.vsidx
+*.suo
+*.user
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+*.log

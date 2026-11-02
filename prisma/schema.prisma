@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:root@localhost:3306/mock_interview_db"
+}
+
+model users {
+  id                 BigInt               @id @default(autoincrement())
+  email              String               @unique @db.VarChar(255)
+  name               String?              @db.VarChar(255)
+  password           String               @db.VarChar(255)
+  role               String               @default("USER") @db.VarChar(50)
+  google_id          String?              @unique @db.VarChar(255)
+  created_at         DateTime?            @default(now()) @db.DateTime(0)
+  updated_at         DateTime?            @default(now()) @db.DateTime(0)
+  last_login         DateTime?            @default(now()) @db.DateTime(0)
+  interview_sessions interview_sessions[]
+  recommendations    recommendations[]
+  topic_stats        topic_stats[]
+}
+
+model interview_sessions {
+  id                   BigInt                 @id @default(autoincrement())
+  user_id              BigInt
+  topic                String                 @db.VarChar(100)
+  difficulty           String                 @db.VarChar(50)
+  total_questions      Int
+  answered_questions   Int?                   @default(0)
+  overall_score        Float?                 @default(0)
+  status               String                 @default("active") @db.VarChar(50)
+  started_at           DateTime?              @default(now()) @db.DateTime(0)
+  completed_at         DateTime?              @db.DateTime(0)
+  created_at           DateTime?              @default(now()) @db.DateTime(0)
+  user                 users                  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  question_evaluations question_evaluations[]
+  session_questions    session_questions[]
+
+  @@index([status], map: "idx_status")
+  @@index([user_id], map: "idx_user_id")
+}
+
+model session_questions {
+  id                   BigInt                 @id @default(autoincrement())
+  session_id           BigInt
+  question_number      Int
+  question_text        String                 @db.Text
+  question_difficulty  String                 @db.VarChar(50)
+  user_answer          String?                @db.Text
+  submitted            String                 @default("pending") @db.VarChar(50)
+  created_at           DateTime?              @default(now()) @db.DateTime(0)
+  session              interview_sessions     @relation(fields: [session_id], references: [id], onDelete: Cascade)
+  question_evaluations question_evaluations[]
+
+  @@index([session_id], map: "idx_session_id")
+}
+
+model question_evaluations {
+  id                 BigInt             @id @default(autoincrement())
+  question_id        BigInt
+  session_id         BigInt
+  correctness_score  Int?
+  completeness_score Int?
+  clarity_score      Int?
+  overall_score      Int?
+  feedback           String?            @db.Text
+  strengths          String?            @db.Text
+  improvements       String?            @db.Text
+  ideal_answer       String?            @db.Text
+  evaluated_at       DateTime?          @default(now()) @db.DateTime(0)
+  question           session_questions  @relation(fields: [question_id], references: [id], onDelete: Cascade)
+  session            interview_sessions @relation(fields: [session_id], references: [id], onDelete: Cascade)
+
+  @@index([question_id], map: "idx_question_id")
+  @@index([session_id], map: "idx_session_id")
+}
+
+model topic_stats {
+  id              BigInt    @id @default(autoincrement())
+  user_id         BigInt
+  topic           String    @db.VarChar(100)
+  total_sessions  Int?      @default(0)
+  total_questions Int?      @default(0)
+  average_score   Float?    @default(0)
+  best_score      Float?    @default(0)
+  updated_at      DateTime? @default(now()) @db.DateTime(0)
+  user            users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, topic], map: "unique_user_topic")
+}
+
+model recommendations {
+  id                BigInt    @id @default(autoincrement())
+  user_id           BigInt
+  recommended_topic String    @db.VarChar(255)
+  reason            String?   @db.Text
+  priority          String    @default("medium") @db.VarChar(50)
+  confidence        Float?    @default(0)
+  created_at        DateTime? @default(now()) @db.DateTime(0)
+  user              users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "idx_user_id")
+}
